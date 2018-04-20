@@ -40,6 +40,7 @@
         this.dateLimit = false;
         this.autoApply = false;
         this.singleDatePicker = false;
+        this.singleMonthPicker = false;
         this.showDropdowns = false;
         this.showWeekNumbers = false;
         this.showISOWeekNumbers = false;
@@ -241,6 +242,10 @@
             this.singleDatePicker = options.singleDatePicker;
             if (this.singleDatePicker)
                 this.endDate = this.startDate.clone();
+        }
+        
+        if (typeof options.singleMonthPicker === 'boolean') {
+            this.singleMonthPicker = options.singleMonthPicker;
         }
 
         if (typeof options.timePicker === 'boolean')
@@ -1361,6 +1366,15 @@
                 this.setEndDate(this.startDate);
                 if (!this.timePicker)
                     this.clickApply();
+            }
+            
+            if (this.singleMonthPicker) {
+                this.setStartDate(moment(this.startDate).startOf('month'));
+                this.setEndDate(moment(this.startDate).endOf('month'));
+                  if (this.autoApply && !this.timePicker) {
+                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
+                    this.clickApply();
+                  }
             }
 
             this.updateView();
